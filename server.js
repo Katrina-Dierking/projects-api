@@ -1,6 +1,15 @@
-{"projects" : 
-  {
-         "The Homeschool Mom Hive" : 
+const express = require('express')
+const app = express()
+const cors = require('cors')
+const PORT = 8000
+
+app.use(cors())
+// const projects = require('./db.json')
+
+
+//data 
+let projects = {
+         "the homeschool mom hive" : 
             {
               "id": 1,
               "title": "The Homeschool Mom Hive",
@@ -13,7 +22,7 @@
               "category": "social media", 
               "stack":""
             },
-         "Mom Off the Earth": {
+         "mom off the earth": {
            "id": 2,
            "title": "Mom Off the Earth",
            "subtitle": "",
@@ -23,7 +32,7 @@
             "category": "ecommerce",
             "stack": ""
          },
-         "Renaissance Wife": {
+         "renaissance wife": {
            "id": 3,
            "title": "Renaissance Wife",
            "subtitle": "",
@@ -33,7 +42,7 @@
             "category": "static page",
             "stack": ""
          },
-         "Queen Bean Design Cafe Funnel":{
+         "queen bean design cafe funnel":{
             "id": 4,
             "title": "Queen Bean Design Cafe Funnel",
             "subtitle":"",
@@ -45,7 +54,7 @@
              "category": "funnel",
             "stack": ""
          },
-         "Model View Controller":{
+         "model view controller":{
            "id": 5,
            "title": "Model View Controller",
            "subtitle": "",
@@ -56,4 +65,31 @@
             "stack": ""
          }
   }
-}
+
+
+//set up server to hear request and generate a response
+
+
+
+
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html')
+})
+
+app.get('/api', (req, res) => {
+    res.json(projects)
+})
+
+app.get("/api/:name", (request, response) => {
+  const proName = request.params.name.toLowerCase();
+  if (projects[proName]) {
+    response.json(projects[proName]);
+  } else {
+    response.json(projects["mom off the earth"]);
+  }
+});
+
+
+app.listen(PORT, ()=>{
+    console.log(`The server is running on ${PORT}! Don't let it escape!`)
+})
